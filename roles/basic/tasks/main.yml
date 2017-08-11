@@ -1,0 +1,16 @@
+---
+- name: Install Packages"
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - vim
+    - git
+    - nfs-kernel-server
+    - curl
+    - zsh
+    - tasksel
+    - tmux
+    - software-properties-common
+    - python-pip
+    - ansible
+    - apt-transport-https
+    - ca-certificates

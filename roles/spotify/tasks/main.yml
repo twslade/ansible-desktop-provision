@@ -1,0 +1,15 @@
+---
+- name: 
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: BBEBDCB318AD50EC6865090613B00F1FD2C19886
+    state: present
+
+- name: Add Spotify Repo
+  copy: content="deb http://repository.spotify.com stable non-free" dest=/etc/apt/sources.list.d/spotify.list owner=root group=root mode=644
+    
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Install Spotify Client
+  apt: pkg=spotify-client state=installed

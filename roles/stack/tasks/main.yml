@@ -1,0 +1,47 @@
+---
+- name: "Add apt repo"
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+
+- name: "Install Webserver Deps"
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - apache2
+    - php5.6
+    - php
+    - php5.6-cli
+    - php5.6-mbstring
+    - php5.6-mcrypt
+    - php5.6-mysql
+    - php5.6-xml
+    - php5.6-gd
+    - php5.6-json
+    - php5.6-sqlite3
+    - php5.6-xsl
+    - php5.6-xmlrpc
+    - php5.6-curl
+    - php5.6-soap
+
+- name: "Enable appropriate modules"
+  apache2_module: name={{ item }} state=present
+  with_items:
+    - headers
+    - rewrite
+    - php5.6
+
+- name: "Disable php7"
+  apache2_module: name=php7.1 state=absent
+
+- name: "Disable php7 cli"
+  alternatives:
+    name: php
+    path: /usr/bin/php5.6 
+  
+
+- name: "Set me as webserver"
+  replace:
+    path: /etc/apache2/envvars
+    regexp: '^(.*)www-data(.*)$'
+    replace: '\1thomas\2'
+    backup: yes
